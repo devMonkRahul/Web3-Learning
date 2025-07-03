@@ -5,6 +5,7 @@ dotenv.config()
 const web3 = new Web3("https://sepolia.infura.io/v3/fb32936239ab4ff18b5913a844748a18")
 
 const account1 = "0x390aF025B62BB6FaFeAF3c343C5FAB85CB702361"
+const account2 = "0x0c549dc11dD789A6ed360dF56903c1BA29625c20"
 
 const acc1 = process.env.ACCOUNT1_PRIVATE_KEY
 
@@ -708,4 +709,37 @@ const getBalance = async (acc) => {
 }
 
 getBalance(account1);
-// console.log(rTokenContract.methods);
+getBalance(account2);
+// console.log(await rTokenContract.methods.standard().call());
+
+const sendTransaction = async (from, to, amount, privateKey) => {
+	const nonce = await web3.eth.getTransactionCount(from);
+	const gasLimit = 8000000;
+	const feeData = await web3.eth.calculateFeeData();
+
+	const data = rTokenContract.methods.transfer(to, amount).encodeABI();
+
+	// Build the transaction
+	const txObject = {
+		nonce,
+		to: contractAddress,
+		data,
+		gas: gasLimit,
+		maxFeePerGas: feeData.maxFeePerGas,
+		maxPriorityFeePerGas: feeData.maxPriorityFeePerGas,
+		type: 2, // EIP-1559 transaction
+		chainId: 11155111, // Sepolia testnet chain ID
+	}
+
+	// Sign the transaction
+	const signedTx = await web3.eth.accounts.signTransaction(txObject, `0x${privateKey.toString('hex')}`);
+
+	// Broadcast the transaction
+	const receipt = await web3.eth.sendSignedTransaction(signedTx.rawTransaction);
+
+	console.log(`Transaction successful with hash: ${receipt.transactionHash}`);
+	await getBalance(from);
+}
+
+// console.log(`${await sendTransaction(account1, account2, '100', acc1)}`);
+
