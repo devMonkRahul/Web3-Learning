@@ -2,7 +2,7 @@ import { Web3 } from "web3"
 import dotenv from "dotenv"
 dotenv.config()
 
-const web3 = new Web3("https://sepolia.infura.io/v3/fb32936239ab4ff18b5913a844748a18")
+const web3 = new Web3(`https://sepolia.infura.io/v3/${process.env.INFURA_API_KEY}`)
 
 const account1 = "0x390aF025B62BB6FaFeAF3c343C5FAB85CB702361"
 // const account2 = "0x0c549dc11dD789A6ed360dF56903c1BA29625c20"

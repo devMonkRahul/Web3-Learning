@@ -5,7 +5,7 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 // Initialize Web3 with Sepolia testnet RPC
-const web3 = new Web3('https://sepolia.infura.io/v3/fb32936239ab4ff18b5913a844748a18');
+const web3 = new Web3(`https://sepolia.infura.io/v3/${process.env.INFURA_API_KEY}`);
 // Alternative RPC endpoints (latest):
 // const web3 = new Web3('https://rpc.sepolia.org');
 // const web3 = new Web3('https://ethereum-sepolia-rpc.publicnode.com');
