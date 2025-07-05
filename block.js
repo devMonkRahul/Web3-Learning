@@ -7,9 +7,16 @@ const web3 = new Web3(
 );
 
 const block = await web3.eth.getBlock(
-  22845755
+  "latest"
 );
-console.log({
-  blockHash: block.hash,
-  blockNumber: block.number
-});
+
+// const block = await web3.eth.getBlockTransactionCount("latest")
+
+const transaction = await web3.eth.getTransactionFromBlock(block.hash, 1)
+
+// console.log({
+//   blockHash: block.hash,
+//   blockNumber: block.number
+// });
+// console.log(block);
+console.log(transaction);
